@@ -144,3 +144,66 @@ macro(MakeAvailable NAME)
         add_subdirectory(${${NAME}_SOURCE_DIR} ${${NAME}_BINARY_DIR} EXCLUDE_FROM_ALL)
     endif ()
 endmacro()
+
+
+###############################################################
+# 根据protobuf文件生成protobuf代码，并打包为静态链接库
+#
+# 此函数会将protobuf文件名称作为静态链接库名称，例如 test.proto 将生成:
+# - libproto_test.a
+# - proto_test.pb.cc
+# - proto_test.pb.h
+#
+# 用法：
+#    protobuf_generate_src(返回绝对路径列表变量 相对路径列表变量)
+###############################################################
+function(protobuf_generate_src PROTOBUF_SRC)
+    string(REGEX REPLACE ".+/(.+)\\..*" "\\1" FILE_NAME ${PROTOBUF_SRC}) #获取文件名
+    get_filename_component(FILE_SRC ${PROTOBUF_SRC} ABSOLUTE)
+    get_filename_component(FILE_PATH "${FILE_SRC}" PATH)
+    get_filename_component(FILE_GEN_DIR "${CMAKE_BINARY_DIR}/protobuf" ABSOLUTE)
+    file(MAKE_DIRECTORY ${FILE_GEN_DIR}) #创建文件夹
+
+    set(${FILE_NAME}_PROTO_SRC "${FILE_GEN_DIR}/${FILE_NAME}.pb.cc")
+    set(${FILE_NAME}_PROTO_HDR "${FILE_GEN_DIR}/${FILE_NAME}.pb.h")
+
+#    message(STATUS ">>> FILE_NAME = ${FILE_NAME}")
+#    message(STATUS ">>> FILE_SRC = ${FILE_SRC}")
+#    message(STATUS ">>> FILE_PATH = ${FILE_PATH}")
+#    message(STATUS ">>> FILE_GEN_DIR = ${FILE_GEN_DIR}")
+#    message(STATUS ">>> ${FILE_NAME}_PROTO_SRC = ${${FILE_NAME}_PROTO_SRC}")
+#    message(STATUS ">>> ${FILE_NAME}_PROTO_HDR = ${${FILE_NAME}_PROTO_HDR}")
+#    message(STATUS ">>> PROTOBUF_PROTOC = ${_PROTOBUF_PROTOC}")
+
+    add_custom_command(
+        OUTPUT
+        "${${FILE_NAME}_PROTO_SRC}"
+        "${${FILE_NAME}_PROTO_HDR}"
+
+        COMMAND ${_PROTOBUF_PROTOC}
+        ARGS --cpp_out "${FILE_GEN_DIR}"
+        -I "${FILE_PATH}"
+        "${FILE_SRC}"
+        DEPENDS "${FILE_SRC}"
+    )
+
+    add_library(
+        ${FILE_NAME}
+        ${${FILE_NAME}_PROTO_SRC}
+        ${${FILE_NAME}_PROTO_HDR}
+    )
+
+    target_include_directories(
+        ${FILE_NAME} PUBLIC
+        ${FILE_GEN_DIR}
+    )
+
+    target_link_libraries(
+        ${FILE_NAME} PRIVATE
+        protobuf::libprotobuf
+    )
+
+    add_library(proto::${FILE_NAME} ALIAS ${FILE_NAME})
+    message(STATUS "Generate proto library proto::${FILE_NAME}")
+
+endfunction()
