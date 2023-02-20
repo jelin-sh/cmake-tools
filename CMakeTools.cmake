@@ -199,7 +199,7 @@ function(protobuf_generate_src PROTOBUF_SRC)
     )
 
     target_link_libraries(
-        ${FILE_NAME} PRIVATE
+        ${FILE_NAME} PUBLIC
         protobuf::libprotobuf
     )
 
