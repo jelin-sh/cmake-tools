@@ -1,6 +1,6 @@
 include(FetchContent)
 
-message(STATUS "Download & Install ASIO ...")
+message(STATUS "Initializing ASIO ...")
 #set(FETCHCONTENT_QUIET FALSE)
 fetchcontent_declare(
     asio
@@ -8,4 +8,4 @@ fetchcontent_declare(
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 MakeAvailable(asio)
-message(STATUS "Download & Install ASIO ... Done")
+message(STATUS "Initializing ASIO ... Done")

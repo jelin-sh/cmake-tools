@@ -1,6 +1,6 @@
 include(FetchContent)
 
-message(STATUS "Download & Install Json for Modern C++ ...")
+message(STATUS "Initializing Json for Modern C++ ...")
 #set(FETCHCONTENT_QUIET FALSE)
 fetchcontent_declare(
     json
@@ -8,4 +8,4 @@ fetchcontent_declare(
     GIT_TAG v3.11.2
 )
 MakeAvailable(json)
-message(STATUS "Download & Install Json for Modern C++ ... Done")
+message(STATUS "Initializing Json for Modern C++ ... Done")

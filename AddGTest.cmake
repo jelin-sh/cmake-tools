@@ -1,6 +1,6 @@
 include(FetchContent)
 
-message(STATUS "Download & Install GTest ...")
+message(STATUS "Initializing GTest ...")
 #set(FETCHCONTENT_QUIET FALSE)
 fetchcontent_declare(
     gtest
@@ -9,4 +9,4 @@ fetchcontent_declare(
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 MakeAvailable(gtest)
-message(STATUS "Download & Install GTest ... Done")
+message(STATUS "Initializing GTest ... Done")

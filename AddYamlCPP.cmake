@@ -1,6 +1,6 @@
 include(FetchContent)
 
-message(STATUS "Download & Install yaml-cpp ...")
+message(STATUS "Initializing yaml-cpp ...")
 #set(FETCHCONTENT_QUIET FALSE)
 fetchcontent_declare(
     yaml
@@ -8,4 +8,4 @@ fetchcontent_declare(
     GIT_TAG yaml-cpp-0.7.0
 )
 MakeAvailable(yaml)
-message(STATUS "Download & Install yaml-cpp ... Done")
+message(STATUS "Initializing yaml-cpp ... Done")

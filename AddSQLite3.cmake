@@ -1,6 +1,6 @@
 include(FetchContent)
 
-message(STATUS "Download & Install SQLite3 ...")
+message(STATUS "Initializing SQLite3 ...")
 #set(FETCHCONTENT_QUIET FALSE)
 fetchcontent_declare(
     sqlite3
@@ -8,4 +8,4 @@ fetchcontent_declare(
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 MakeAvailable(sqlite3)
-message(STATUS "Download & Install SQLite3 ... Done")
+message(STATUS "Initializing SQLite3 ... Done")

@@ -1,6 +1,6 @@
 include(FetchContent)
 
-message(STATUS "Download & Install spdlog ...")
+message(STATUS "Initializing spdlog ...")
 #set(FETCHCONTENT_QUIET FALSE)
 fetchcontent_declare(
     spdlog
@@ -8,4 +8,4 @@ fetchcontent_declare(
     GIT_TAG v1.11.0
 )
 MakeAvailable(spdlog)
-message(STATUS "Download & Install spdlog ... Done")
+message(STATUS "Initializing spdlog ... Done")
