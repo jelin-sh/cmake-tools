@@ -201,6 +201,8 @@ function(protobuf_generate_src PROTOBUF_SRC)
     target_link_libraries(
         ${FILE_NAME} PUBLIC
         protobuf::libprotobuf
+        protobuf::libprotobuf-lite
+        protobuf::libprotoc
     )
 
     add_library(proto::${FILE_NAME} ALIAS ${FILE_NAME})
