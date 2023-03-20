@@ -167,13 +167,13 @@ function(protobuf_generate_src PROTOBUF_SRC)
     set(${FILE_NAME}_PROTO_SRC "${FILE_GEN_DIR}/${FILE_NAME}.pb.cc")
     set(${FILE_NAME}_PROTO_HDR "${FILE_GEN_DIR}/${FILE_NAME}.pb.h")
 
-#    message(STATUS ">>> FILE_NAME = ${FILE_NAME}")
-#    message(STATUS ">>> FILE_SRC = ${FILE_SRC}")
-#    message(STATUS ">>> FILE_PATH = ${FILE_PATH}")
-#    message(STATUS ">>> FILE_GEN_DIR = ${FILE_GEN_DIR}")
-#    message(STATUS ">>> ${FILE_NAME}_PROTO_SRC = ${${FILE_NAME}_PROTO_SRC}")
-#    message(STATUS ">>> ${FILE_NAME}_PROTO_HDR = ${${FILE_NAME}_PROTO_HDR}")
-#    message(STATUS ">>> PROTOBUF_PROTOC = ${_PROTOBUF_PROTOC}")
+    message(STATUS ">>> FILE_NAME = ${FILE_NAME}")
+    message(STATUS ">>> FILE_SRC = ${FILE_SRC}")
+    message(STATUS ">>> FILE_PATH = ${FILE_PATH}")
+    message(STATUS ">>> FILE_GEN_DIR = ${FILE_GEN_DIR}")
+    message(STATUS ">>> ${FILE_NAME}_PROTO_SRC = ${${FILE_NAME}_PROTO_SRC}")
+    message(STATUS ">>> ${FILE_NAME}_PROTO_HDR = ${${FILE_NAME}_PROTO_HDR}")
+    message(STATUS ">>> PROTOBUF_PROTOC = ${_PROTOBUF_PROTOC}")
 
     add_custom_command(
         OUTPUT
@@ -181,8 +181,8 @@ function(protobuf_generate_src PROTOBUF_SRC)
         "${${FILE_NAME}_PROTO_HDR}"
 
         COMMAND ${_PROTOBUF_PROTOC}
-        ARGS --cpp_out "${FILE_GEN_DIR}"
-        -I "${FILE_PATH}"
+        ARGS --cpp_out="${FILE_GEN_DIR}"
+        --proto_path="${FILE_PATH}"
         "${FILE_SRC}"
         DEPENDS "${FILE_SRC}"
     )
