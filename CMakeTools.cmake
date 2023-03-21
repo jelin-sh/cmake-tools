@@ -65,15 +65,15 @@ function(grpc_generate PROTOBUF_SRC)
     set(${FILE_NAME}_GRPC_HDR "${FILE_GEN_DIR}/${FILE_NAME}.grpc.pb.h")
 
 
-    message(">>> FILE_NAME = ${FILE_NAME}")
-    message(">>> FILE_SRC = ${FILE_SRC}")
-    message(">>> FILE_PATH = ${FILE_PATH}")
-    message(">>> FILE_GEN_DIR = ${FILE_GEN_DIR}")
-
-    message(">>> ${FILE_NAME}_PROTO_SRC = ${${FILE_NAME}_PROTO_SRC}")
-    message(">>> ${FILE_NAME}_PROTO_HDR = ${${FILE_NAME}_PROTO_HDR}")
-    message(">>> ${FILE_NAME}_GRPC_SRC = ${${FILE_NAME}_GRPC_SRC}")
-    message(">>> ${FILE_NAME}_GRPC_HDR = ${${FILE_NAME}_GRPC_HDR}")
+#    message(">>> FILE_NAME = ${FILE_NAME}")
+#    message(">>> FILE_SRC = ${FILE_SRC}")
+#    message(">>> FILE_PATH = ${FILE_PATH}")
+#    message(">>> FILE_GEN_DIR = ${FILE_GEN_DIR}")
+#
+#    message(">>> ${FILE_NAME}_PROTO_SRC = ${${FILE_NAME}_PROTO_SRC}")
+#    message(">>> ${FILE_NAME}_PROTO_HDR = ${${FILE_NAME}_PROTO_HDR}")
+#    message(">>> ${FILE_NAME}_GRPC_SRC = ${${FILE_NAME}_GRPC_SRC}")
+#    message(">>> ${FILE_NAME}_GRPC_HDR = ${${FILE_NAME}_GRPC_HDR}")
 
     add_custom_command(
         OUTPUT
@@ -116,13 +116,16 @@ function(grpc_generate PROTOBUF_SRC)
     #        RUNTIME_OUTPUT_DIRECTORY ${FILE_GEN_DIR}
     #    )
 
+    add_library(proto::${FILE_NAME} ALIAS proto_${FILE_NAME})
+    message(STATUS "Generate proto library proto::${FILE_NAME}")
+
 endfunction()
 
 ###############################################################
 # 根据protobuf文件生成gRPC代码，并打包为静态链接库，支持批量生成和打包
 #
 # 用法：
-#    grpc_generate(返回绝对路径列表变量 相对路径列表变量)
+#    grpc_generate(Proto文件列表)
 ###############################################################
 function(list_grpc_generate LIST_PROTOBUF_SRC)
     grpc_generate(${LIST_PROTOBUF_SRC})
@@ -188,24 +191,24 @@ function(protobuf_generate_src PROTOBUF_SRC)
     )
 
     add_library(
-        ${FILE_NAME}
+        proto_${FILE_NAME}
         ${${FILE_NAME}_PROTO_SRC}
         ${${FILE_NAME}_PROTO_HDR}
     )
 
     target_include_directories(
-        ${FILE_NAME} PUBLIC
+        proto_${FILE_NAME} PUBLIC
         ${FILE_GEN_DIR}
     )
 
     target_link_libraries(
-        ${FILE_NAME} PUBLIC
+        proto_${FILE_NAME} PUBLIC
         protobuf::libprotobuf
         protobuf::libprotobuf-lite
         protobuf::libprotoc
     )
 
-    add_library(proto::${FILE_NAME} ALIAS ${FILE_NAME})
+    add_library(proto::${FILE_NAME} ALIAS proto_${FILE_NAME})
     message(STATUS "Generate proto library proto::${FILE_NAME}")
 
 endfunction()
