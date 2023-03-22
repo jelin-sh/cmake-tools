@@ -105,7 +105,8 @@ function(grpc_generate PROTOBUF_SRC)
     )
 
     target_link_libraries(
-        proto_${FILE_NAME} PRIVATE
+        proto_${FILE_NAME} PUBLIC
+        $<$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>:ws2_32>
         ${_REFLECTION}
         ${_GRPC_GRPCPP}
         ${_PROTOBUF_LIBPROTOBUF}
